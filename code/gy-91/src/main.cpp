@@ -1,4 +1,3 @@
-
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_BMP280.h>
@@ -22,16 +21,10 @@ void I2Cread(uint8_t Address, uint8_t Register, uint8_t Nbytes, uint8_t* Data)
 
   Wire.requestFrom(Address, Nbytes);
   uint8_t index = 0;
-  // Serial.print("Wire available: "); // debug prints
-  // Serial.println(Wire.available());
 
   while (Wire.available())
   {
     Data[index++] = Wire.read();
-    //Serial.println("Data array data:"); //debug prints
-    //Serial.print(index-1);
-    //Serial.print("\t");
-    //Serial.println(Data[index-1]);
   }
 }
 
@@ -42,6 +35,7 @@ void I2CwriteByte(uint8_t Address, uint8_t Register, uint8_t Data)
   Wire.write(Data);
   Wire.endTransmission();
 }
+
 
 void setup()
 {

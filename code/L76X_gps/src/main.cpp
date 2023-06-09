@@ -28,16 +28,17 @@ void logGps()
           gps.date.year(),
           gps.date.month(),
           gps.date.day(),
-          gps.time.hour(),
+          gps.time.hour() + 3,
           gps.time.minute(),
           gps.time.second());
   Serial.println("Timestamp created");
   std::stringstream logLine;
-  logLine << timestamp << ","
-          << String(gps.location.lat(), 8).c_str() << ","
-          << String(gps.location.lng(), 8).c_str() << ","
-          << gps.altitude.meters() << ","
-          << String(gps.hdop.hdop(), 2).c_str() << ","
+  logLine << timestamp << ",\tCourse: "
+          << gps.course.deg() << ", "
+          << String(gps.location.lat(), 8).c_str() << ", "
+          << String(gps.location.lng(), 8).c_str() << ", "
+          << gps.altitude.meters() << ", "
+          << String(gps.hdop.hdop(), 2).c_str() << ", "
           << gps.satellites.value() << "\r\n";
   Serial.println("Line created");
   Serial.println(logLine.str().c_str());
@@ -47,8 +48,6 @@ void setup()
 {
   Serial.begin(SERIAL_BAUD);
   SerialGPS.begin(GPS_BAUD, SERIAL_8N1, GPS_RX, GPS_TX);  
-
-  
   ++bootCount;
   Serial.println("Boot number: " + String(bootCount));
   esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
@@ -63,7 +62,6 @@ void loop()
     gps.encode(c);
     //Serial.println(c);
   }
-
   //Serial.println(gps.satellites.value());
   if (nextSerialTaskTs < millis() && gps.satellites.value() > 3)
   {
