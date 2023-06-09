@@ -343,22 +343,7 @@ float calculate_distance()
     float lat2 = gps.location.lat() * PI / 180.0;
     float lon2 = gps.location.lng() * PI / 180.0;
 
-    double r = 6378100;
-
-    double rho1 = r * cos(lat1);
-    double z1 = r * sin(lat1);
-    double x1 = rho1 * cos(lon1);
-    double y1 = rho1 * sin(lon1);
-
-    double rho2 = r * cos(lat2);
-    double z2 = r * sin(lat2);
-    double x2 = rho2 * cos(lon2);
-    double y2 = rho2 * sin(lon2);
-
-    double dot = (x1 * x2 + y1 * y2 + z1 * z2);
-    double cos_theta = dot / (r * r);
-    double theta = acos(cos_theta);
-    return r * theta;
+	return gps.distanceBetween(lat1, lon1, lat2, lon2);
 }
 
 void update_current_data_by_GPS()
